@@ -1,23 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {
-  Compass,
-  Eye,
+  Box,
+  ExternalLink,
   Layers,
   LocateFixed,
-  MapPin,
   Maximize2,
-  Mountain,
   Navigation,
-  RotateCcw,
-  RotateCw,
+  Search,
   Volume2,
   X,
 } from 'lucide-react';
 import { Landmark, MapStyleMode, Place, RouteData } from '../types/navigation';
-import { GOOGLE_MAPS_API_KEY, MAPTILER_KEY } from '../services/api';
+import { MAPTILER_KEY } from '../services/api';
 import { speakAnnouncement } from '../hooks/useLiveNavigation';
+import { CATEGORY_META, metaFor } from '../data/categories';
 
 type Map3DViewProps = {
   destination: Place;
@@ -39,21 +37,29 @@ type Map3DViewProps = {
 type InspectedSpot = {
   title: string;
   category: string;
+  categoryKey: string;
   description: string;
   lat: number;
   lon: number;
   placeObj?: Place;
 };
 
+// GBU campus outline (Wikimapia object 10253917), [lon, lat]
+const CAMPUS_BOUNDARY: [number, number][] = [
+  [77.515553, 28.41919], [77.531169, 28.433155], [77.533726, 28.428439],
+  [77.530198, 28.41648], [77.519043, 28.412165], [77.517133, 28.416022],
+  [77.51716, 28.416032], [77.51731, 28.416362], [77.517179, 28.416638],
+  [77.516801, 28.41676], [77.516761, 28.416746], [77.515553, 28.41919],
+];
+
+const LABEL_MIN_ZOOM = 16.2;
+
 function buildMapStyle(mode: MapStyleMode): maplibregl.StyleSpecification | string {
   if (MAPTILER_KEY) {
     if (mode === 'satellite') {
-      return `https://api.maptiler.com/maps/satellite/style.json?key=${MAPTILER_KEY}`;
+      return `https://api.maptiler.com/maps/hybrid/style.json?key=${MAPTILER_KEY}`;
     }
-    if (mode === 'street') {
-      return `https://api.maptiler.com/maps/streets-v2/style.json?key=${MAPTILER_KEY}`;
-    }
-    return `https://api.maptiler.com/maps/hybrid/style.json?key=${MAPTILER_KEY}`;
+    return `https://api.maptiler.com/maps/streets-v2/style.json?key=${MAPTILER_KEY}`;
   }
 
   if (mode === 'satellite') {
@@ -66,18 +72,11 @@ function buildMapStyle(mode: MapStyleMode): maplibregl.StyleSpecification | stri
             'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
           ],
           tileSize: 256,
+          maxzoom: 19,
           attribution: '&copy; Esri, Maxar, Earthstar Geographics',
         },
       },
-      layers: [
-        {
-          id: 'esri-satellite-layer',
-          type: 'raster',
-          source: 'esriSatellite',
-          minzoom: 0,
-          maxzoom: 19,
-        },
-      ],
+      layers: [{ id: 'esri-satellite-layer', type: 'raster', source: 'esriSatellite' }],
     };
   }
 
@@ -95,15 +94,7 @@ function buildOsmFallbackStyle(): maplibregl.StyleSpecification {
         attribution: '&copy; OpenStreetMap contributors',
       },
     },
-    layers: [
-      {
-        id: 'osm-base',
-        type: 'raster',
-        source: 'osm',
-        minzoom: 0,
-        maxzoom: 19,
-      },
-    ],
+    layers: [{ id: 'osm-base', type: 'raster', source: 'osm', minzoom: 0, maxzoom: 19 }],
   };
 }
 
@@ -115,27 +106,21 @@ function registerArrowIcon(map: maplibregl.Map) {
   canvas.height = size;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
-
-  ctx.clearRect(0, 0, size, size);
-  // Crisp white chevron pointing right (0 deg in MapLibre line symbol)
   ctx.beginPath();
-  ctx.moveTo(11, 7);
-  ctx.lineTo(26, 18);
-  ctx.lineTo(11, 29);
-  ctx.lineWidth = 4.5;
+  ctx.moveTo(12, 9);
+  ctx.lineTo(24, 18);
+  ctx.lineTo(12, 27);
+  ctx.lineWidth = 4;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.strokeStyle = '#ffffff';
   ctx.stroke();
-
-  const imgData = ctx.getImageData(0, 0, size, size);
-  map.addImage('route-direction-arrow', imgData);
+  map.addImage('route-direction-arrow', ctx.getImageData(0, 0, size, size));
 }
 
 export default function Map3DView({
   destination,
   places,
-  landmarks,
   route,
   startPoint,
   liveGps,
@@ -152,21 +137,38 @@ export default function Map3DView({
   const mapRef = useRef<maplibregl.Map | null>(null);
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const placeMarkersRef = useRef<maplibregl.Marker[]>([]);
+  const appliedStyleRef = useRef<MapStyleMode>('street');
+  const syncRef = useRef<() => void>(() => {});
 
-  const [styleMode, setStyleMode] = useState<MapStyleMode>('hybrid');
-  const [pitch, setPitch] = useState<number>(60);
-  const [bearing, setBearing] = useState<number>(0);
+  const [styleMode, setStyleMode] = useState<MapStyleMode>('street');
+  const [is3D, setIs3D] = useState<boolean>(false);
+  const [showLabels, setShowLabels] = useState<boolean>(true);
   const [mapReady, setMapReady] = useState<boolean>(false);
   const [inspectedSpot, setInspectedSpot] = useState<InspectedSpot | null>(null);
   const [mapFallbackNotice, setMapFallbackNotice] = useState<string>('');
+  const [searchText, setSearchText] = useState<string>('');
+  const [searchOpen, setSearchOpen] = useState<boolean>(false);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (GOOGLE_MAPS_API_KEY || MAPTILER_KEY) {
-      setMapFallbackNotice('');
-      return;
-    }
-    setMapFallbackNotice('');
-  }, [lang]);
+  const nameOf = (p: Place) => (lang === 'hi' && p.name_hi ? p.name_hi : p.name);
+
+  const presentCategories = useMemo(
+    () => Object.keys(CATEGORY_META).filter((c) => places.some((p) => p.category === c)),
+    [places]
+  );
+
+  const searchResults = useMemo(() => {
+    const q = searchText.trim().toLowerCase();
+    if (!q) return [];
+    return places
+      .filter((p) =>
+        [p.name, p.name_hi || '', p.category, ...(p.aliases || [])]
+          .join(' ')
+          .toLowerCase()
+          .includes(q)
+      )
+      .slice(0, 8);
+  }, [places, searchText]);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -175,42 +177,35 @@ export default function Map3DView({
       container: containerRef.current,
       style: buildMapStyle(styleMode),
       center: [destination.longitude, destination.latitude],
-      zoom: 16.8,
-      pitch: 60,
-      bearing: -15,
+      zoom: 16.4,
+      pitch: 0,
+      bearing: 0,
+      maxPitch: 70,
       antialias: true,
     });
 
-    map.addControl(
-      new maplibregl.NavigationControl({ visualizePitch: true }),
-      'top-right'
-    );
+    map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'bottom-right');
+    map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-left');
 
     map.on('load', () => {
       registerArrowIcon(map);
+      applyMapEnhancements(map);
       setMapReady(true);
-      apply3DEnhancements(map);
     });
 
-    map.on('move', () => {
-      setPitch(Math.round(map.getPitch()));
-      setBearing(Math.round(map.getBearing()));
-    });
+    map.on('zoom', () => setShowLabels(map.getZoom() >= LABEL_MIN_ZOOM));
+    map.on('pitchend', () => setIs3D(map.getPitch() > 10));
 
     map.on('error', (e) => {
       const errMsg = e?.error?.message || '';
       if (
-        styleMode !== 'satellite' &&
-        (errMsg.includes('openfreemap') ||
-          errMsg.includes('style') ||
-          !map.isStyleLoaded())
+        appliedStyleRef.current !== 'satellite' &&
+        (errMsg.includes('openfreemap') || errMsg.includes('style') || !map.isStyleLoaded())
       ) {
         try {
           map.setStyle(buildOsmFallbackStyle());
           setMapFallbackNotice(
-            lang === 'hi'
-              ? 'OpenStreetMap लाइव मैप सक्रिय है।'
-              : 'OpenStreetMap live map active.'
+            lang === 'hi' ? 'OpenStreetMap लाइव मैप सक्रिय है।' : 'OpenStreetMap live map active.'
           );
         } catch {
           // ignore
@@ -240,22 +235,21 @@ export default function Map3DView({
     canvas.style.cursor = pickPinMode ? 'crosshair' : '';
 
     const handleMapClick = (e: maplibregl.MapMouseEvent) => {
+      setSearchOpen(false);
       const clickedLat = Number(e.lngLat.lat.toFixed(6));
       const clickedLon = Number(e.lngLat.lng.toFixed(6));
 
-      // Check if user clicked on a named map feature / building
       const features = map.queryRenderedFeatures(e.point);
       const namedFeature = features.find(
         (f) => f.properties && (f.properties.name || f.properties['name:en'])
       );
 
       if (namedFeature && namedFeature.properties) {
-        const fName = String(
-          namedFeature.properties['name:en'] || namedFeature.properties.name
-        );
-        const matchedPlace = places.find((p) =>
-          p.name.toLowerCase().includes(fName.toLowerCase()) ||
-          fName.toLowerCase().includes(p.name.toLowerCase())
+        const fName = String(namedFeature.properties['name:en'] || namedFeature.properties.name);
+        const matchedPlace = places.find(
+          (p) =>
+            p.name.toLowerCase().includes(fName.toLowerCase()) ||
+            fName.toLowerCase().includes(p.name.toLowerCase())
         );
 
         if (matchedPlace) {
@@ -263,24 +257,21 @@ export default function Map3DView({
         } else {
           const spot: InspectedSpot = {
             title: fName,
-            category: lang === 'hi' ? 'कैंपस स्थान' : 'CAMPUS LOCATION',
+            category: lang === 'hi' ? 'कैंपस स्थान' : 'Campus location',
+            categoryKey: '',
             description:
               lang === 'hi'
-                ? `${fName} — गौतम बुद्ध विश्वविद्यालय परिसर के अंदर स्थित स्थान। यहाँ तक रास्ता बनाने के लिए इसे शुरुआती बिंदु या मंज़िल चुन सकते हैं।`
-                : `${fName} — Campus building/area inside Gautam Buddha University. You can route from or to this location.`,
+                ? `${fName} — गौतम बुद्ध विश्वविद्यालय परिसर के अंदर स्थित स्थान।`
+                : `${fName} — location inside Gautam Buddha University campus.`,
             lat: clickedLat,
             lon: clickedLon,
           };
           setInspectedSpot(spot);
-          if (speakerMode === 'auto') {
-            speakAnnouncement(`${spot.title}. ${spot.description}`, lang);
-          }
+          if (speakerMode === 'auto') speakAnnouncement(`${spot.title}. ${spot.description}`, lang);
         }
       }
 
-      if (pickPinMode && onSelectStartPin) {
-        onSelectStartPin([clickedLat, clickedLon]);
-      }
+      if (pickPinMode && onSelectStartPin) onSelectStartPin([clickedLat, clickedLon]);
     };
 
     map.on('click', handleMapClick);
@@ -291,182 +282,162 @@ export default function Map3DView({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickPinMode, onSelectStartPin, places, lang, speakerMode]);
 
-  function inspectPlace(place: Place) {
-    const title = lang === 'hi' && place.name_hi ? place.name_hi : place.name;
-    const category =
-      lang === 'hi' && place.category_hi ? place.category_hi : place.category;
+  function inspectPlace(place: Place, fly = false) {
+    const title = nameOf(place);
+    const meta = metaFor(place.category);
+    const category = lang === 'hi' ? place.category_hi || meta.hi : place.category;
     const description =
-      lang === 'hi' && place.description_hi
-        ? place.description_hi
-        : place.description;
+      lang === 'hi' && place.description_hi ? place.description_hi : place.description;
 
     setInspectedSpot({
       title,
       category,
+      categoryKey: place.category,
       description,
       lat: place.latitude,
       lon: place.longitude,
       placeObj: place,
     });
 
-    if (speakerMode === 'auto') {
-      speakAnnouncement(`${title}. ${description}`, lang);
+    if (fly) {
+      mapRef.current?.flyTo({
+        center: [place.longitude, place.latitude],
+        zoom: Math.max(17.4, mapRef.current.getZoom()),
+        duration: 700,
+      });
     }
+
+    if (speakerMode === 'auto') speakAnnouncement(`${title}. ${description}`, lang);
   }
 
-  function apply3DEnhancements(map: maplibregl.Map) {
+  function applyMapEnhancements(map: maplibregl.Map) {
     try {
       const style = map.getStyle();
-      if (!style) return;
+      if (!style || !style.sources) return;
+      if (style.layers?.some((l) => l.id === 'gbu-3d-buildings')) return;
 
-      // Enhance map colours: lush campus greenery & clear roads
-      style.layers?.forEach((layer) => {
-        if (layer.id.includes('park') || layer.id.includes('grass') || layer.id.includes('landuse')) {
-          if (layer.type === 'fill') {
-            map.setPaintProperty(layer.id, 'fill-color', '#cbe5c0');
-          }
-        }
-        if (layer.id.includes('water') && layer.type === 'fill') {
-          map.setPaintProperty(layer.id, 'fill-color', '#8cc9f0');
-        }
-      });
-
-      if (style.sources && 'terrainSource' in style.sources) {
-        map.setTerrain({ source: 'terrainSource', exaggeration: 1.2 });
-      }
-
-      const hasBuildingLayer = style.layers?.some(
-        (l) => l.id === 'gbu-3d-buildings'
+      const vectorSourceKey = Object.keys(style.sources).find(
+        (k) => style.sources[k]?.type === 'vector'
       );
-      if (!hasBuildingLayer && style.sources) {
-        const vectorSourceKey = Object.keys(style.sources).find(
-          (k) => style.sources[k]?.type === 'vector'
-        );
-        if (vectorSourceKey) {
-          const labelLayerId = style.layers?.find(
-            (l) => l.type === 'symbol' && l.layout && 'text-field' in l.layout
-          )?.id;
+      if (!vectorSourceKey) return;
 
-          map.addLayer(
-            {
-              id: 'gbu-3d-buildings',
-              source: vectorSourceKey,
-              'source-layer': 'building',
-              filter: ['any', ['has', 'render_height'], ['has', 'height']],
-              type: 'fill-extrusion',
-              minzoom: 14.2,
-              paint: {
-                'fill-extrusion-color': [
-                  'interpolate',
-                  ['linear'],
-                  ['coalesce', ['get', 'render_height'], ['get', 'height'], 10],
-                  0,
-                  '#d6e6cf',
-                  15,
-                  '#a7cca0',
-                  30,
-                  '#7eb083',
-                ],
-                'fill-extrusion-height': [
-                  'interpolate',
-                  ['linear'],
-                  ['zoom'],
-                  14.2,
-                  0,
-                  15.0,
-                  ['coalesce', ['get', 'render_height'], ['get', 'height'], 12],
-                ],
-                'fill-extrusion-base': [
-                  'coalesce',
-                  ['get', 'render_min_height'],
-                  ['get', 'min_height'],
-                  0,
-                ],
-                'fill-extrusion-opacity': 0.88,
-              },
-            },
-            labelLayerId
-          );
-        }
-      }
+      const labelLayerId = style.layers?.find(
+        (l) => l.type === 'symbol' && l.layout && 'text-field' in l.layout
+      )?.id;
+
+      // Google-style soft grey buildings; extrude only gains height when tilted.
+      map.addLayer(
+        {
+          id: 'gbu-3d-buildings',
+          source: vectorSourceKey,
+          'source-layer': 'building',
+          type: 'fill-extrusion',
+          minzoom: 14.5,
+          paint: {
+            'fill-extrusion-color': '#e8e6e1',
+            'fill-extrusion-height': [
+              'coalesce', ['get', 'render_height'], ['get', 'height'], 9,
+            ],
+            'fill-extrusion-base': [
+              'coalesce', ['get', 'render_min_height'], ['get', 'min_height'], 0,
+            ],
+            'fill-extrusion-opacity': 0.9,
+          },
+        },
+        labelLayerId
+      );
     } catch {
-      // Keep base map cleanly
+      // keep base map
     }
   }
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
+    if (!map || appliedStyleRef.current === styleMode) return;
+    appliedStyleRef.current = styleMode;
     setMapReady(false);
     map.setStyle(buildMapStyle(styleMode));
     map.once('styledata', () => {
       registerArrowIcon(map);
+      applyMapEnhancements(map);
       setMapReady(true);
-      apply3DEnhancements(map);
-      syncRouteAndMarkers();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [styleMode]);
 
+  function upsertGeoJson(map: maplibregl.Map, id: string, data: GeoJSON.FeatureCollection) {
+    const src = map.getSource(id) as maplibregl.GeoJSONSource | undefined;
+    if (src) {
+      src.setData(data);
+      return false;
+    }
+    map.addSource(id, { type: 'geojson', data });
+    return true;
+  }
+
   function syncRouteAndMarkers() {
     const map = mapRef.current;
-    if (!map || !map.isStyleLoaded()) return;
+    if (!map) return;
+    if (!map.isStyleLoaded()) {
+      map.once('idle', () => syncRef.current());
+      return;
+    }
     registerArrowIcon(map);
 
-    const routeGeoJson: GeoJSON.FeatureCollection = {
+    // Campus boundary
+    const boundaryAdded = upsertGeoJson(map, 'gbu-campus-boundary', {
+      type: 'FeatureCollection',
+      features: [
+        { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [CAMPUS_BOUNDARY] } },
+      ],
+    });
+    if (boundaryAdded) {
+      map.addLayer({
+        id: 'gbu-campus-fill',
+        type: 'fill',
+        source: 'gbu-campus-boundary',
+        paint: { 'fill-color': '#34a853', 'fill-opacity': styleMode === 'satellite' ? 0 : 0.05 },
+      });
+      map.addLayer({
+        id: 'gbu-campus-line',
+        type: 'line',
+        source: 'gbu-campus-boundary',
+        paint: { 'line-color': styleMode === 'satellite' ? '#ffffff' : '#1e8e3e', 'line-width': 2, 'line-dasharray': [3, 2], 'line-opacity': 0.8 },
+      });
+    }
+
+    // Route (Google Maps walking blue)
+    const routeAdded = upsertGeoJson(map, 'gbu-route-source', {
       type: 'FeatureCollection',
       features:
         route && route.coordinates.length >= 2
-          ? [
-              {
-                type: 'Feature',
-                properties: {},
-                geometry: {
-                  type: 'LineString',
-                  coordinates: route.coordinates,
-                },
-              },
-            ]
+          ? [{ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: route.coordinates } }]
           : [],
-    };
-
-    const existingSource = map.getSource('gbu-route-source') as
-      | maplibregl.GeoJSONSource
-      | undefined;
-
-    if (existingSource) {
-      existingSource.setData(routeGeoJson);
-    } else {
-      map.addSource('gbu-route-source', {
-        type: 'geojson',
-        data: routeGeoJson,
-      });
-      // Outer dark casing for high contrast
+    });
+    if (routeAdded) {
       map.addLayer({
         id: 'gbu-route-casing',
         type: 'line',
         source: 'gbu-route-source',
         layout: { 'line-join': 'round', 'line-cap': 'round' },
-        paint: { 'line-color': '#0b2b4a', 'line-width': 11, 'line-opacity': 0.92 },
+        paint: { 'line-color': '#1967d2', 'line-width': 10 },
       });
-      // Vibrant Google-Navigation style blue-cyan route line
       map.addLayer({
         id: 'gbu-route-line',
         type: 'line',
         source: 'gbu-route-source',
         layout: { 'line-join': 'round', 'line-cap': 'round' },
-        paint: { 'line-color': '#1d8cf8', 'line-width': 7, 'line-opacity': 1 },
+        paint: { 'line-color': '#4285f4', 'line-width': 7 },
       });
-      // Direction arrows spaced continuously along the route
       map.addLayer({
         id: 'gbu-route-arrows',
         type: 'symbol',
         source: 'gbu-route-source',
         layout: {
           'symbol-placement': 'line',
-          'symbol-spacing': 48,
+          'symbol-spacing': 60,
           'icon-image': 'route-direction-arrow',
-          'icon-size': 0.65,
+          'icon-size': 0.55,
           'icon-allow-overlap': true,
           'icon-ignore-placement': true,
         },
@@ -478,68 +449,52 @@ export default function Map3DView({
 
     places.forEach((place) => {
       const isDest = place.id === destination.id;
+      if (!isDest && activeCategory && place.category !== activeCategory) return;
+
+      const meta = metaFor(place.category);
       const el = document.createElement('div');
-      el.className = isDest ? 'ml-pin ml-pin-dest' : 'ml-pin ml-pin-place';
-      el.title = lang === 'hi' && place.name_hi ? place.name_hi : place.name;
-      el.textContent = isDest ? '★' : '●';
+      el.className = isDest ? 'gm-marker gm-marker-dest' : 'gm-marker';
+      el.style.setProperty('--pin', isDest ? '#ea4335' : meta.color);
+      el.title = nameOf(place);
+
+      const pin = document.createElement('div');
+      pin.className = 'gm-pin';
+      const glyph = document.createElement('span');
+      glyph.textContent = meta.glyph;
+      pin.appendChild(glyph);
+      const label = document.createElement('div');
+      label.className = 'gm-label';
+      label.textContent = nameOf(place);
+      el.append(pin, label);
+
       el.addEventListener('click', (ev) => {
         ev.stopPropagation();
         inspectPlace(place);
       });
 
-      const marker = new maplibregl.Marker({ element: el })
-        .setLngLat([place.longitude, place.latitude])
-        .addTo(map);
-      placeMarkersRef.current.push(marker);
-    });
-
-    landmarks.forEach((lm) => {
-      const el = document.createElement('div');
-      el.className = 'ml-pin ml-pin-landmark';
-      el.title = lm.landmark_name;
-      el.textContent = '◆';
-      el.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-        const title =
-          lang === 'hi' && lm.name_hi ? lm.name_hi : lm.landmark_name;
-        const desc =
-          lang === 'hi'
-            ? lm.announcement_hi || lm.announcement || lm.relative_position || ''
-            : lm.announcement || lm.relative_position || '';
-        setInspectedSpot({
-          title,
-          category: lang === 'hi' ? 'प्रमुख लैंडमार्क' : 'CAMPUS LANDMARK',
-          description: desc,
-          lat: lm.latitude,
-          lon: lm.longitude,
-        });
-        if (speakerMode === 'auto') {
-          speakAnnouncement(`${title}. ${desc}`, lang);
-        }
-      });
-
-      const marker = new maplibregl.Marker({ element: el })
-        .setLngLat([lm.longitude, lm.latitude])
-        .addTo(map);
-      placeMarkersRef.current.push(marker);
+      placeMarkersRef.current.push(
+        new maplibregl.Marker({ element: el, anchor: 'bottom' })
+          .setLngLat([place.longitude, place.latitude])
+          .addTo(map)
+      );
     });
 
     if (startPoint) {
       const startEl = document.createElement('div');
-      startEl.className = 'ml-pin ml-pin-start';
-      startEl.textContent = 'S';
-      const startMarker = new maplibregl.Marker({ element: startEl })
-        .setLngLat([startPoint[1], startPoint[0]])
-        .addTo(map);
-      placeMarkersRef.current.push(startMarker);
+      startEl.className = 'gm-start-dot';
+      placeMarkersRef.current.push(
+        new maplibregl.Marker({ element: startEl }).setLngLat([startPoint[1], startPoint[0]]).addTo(map)
+      );
     }
   }
+
+  syncRef.current = syncRouteAndMarkers;
 
   useEffect(() => {
     if (!mapReady) return;
     syncRouteAndMarkers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mapReady, route, destination, places, landmarks, startPoint, lang, speakerMode]);
+  }, [mapReady, route, destination, places, startPoint, lang, speakerMode, activeCategory]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -548,11 +503,8 @@ export default function Map3DView({
     if (followUser && liveGps) {
       map.easeTo({
         center: [liveGps[1], liveGps[0]],
-        bearing:
-          headingDeg !== null && Number.isFinite(headingDeg)
-            ? headingDeg
-            : map.getBearing(),
-        pitch: Math.max(55, map.getPitch()),
+        bearing: headingDeg !== null && Number.isFinite(headingDeg) ? headingDeg : map.getBearing(),
+        pitch: Math.max(50, map.getPitch()),
         zoom: Math.max(17.5, map.getZoom()),
         duration: 600,
       });
@@ -561,24 +513,16 @@ export default function Map3DView({
 
     if (route && route.coordinates.length >= 2) {
       const bounds = new maplibregl.LngLatBounds();
-      route.coordinates.forEach((coord) => {
-        if (coord.length >= 2) bounds.extend([coord[0], coord[1]]);
+      route.coordinates.forEach((c) => {
+        if (c.length >= 2) bounds.extend([c[0], c[1]]);
       });
       map.fitBounds(bounds, {
-        padding: { top: 85, bottom: 110, left: 70, right: 70 },
-        pitch: 58,
-        bearing: -12,
+        padding: { top: 120, bottom: 120, left: 60, right: 60 },
         maxZoom: 18,
         duration: 850,
       });
     } else {
-      map.flyTo({
-        center: [destination.longitude, destination.latitude],
-        zoom: 16.8,
-        pitch: 60,
-        bearing: -15,
-        duration: 750,
-      });
+      map.flyTo({ center: [destination.longitude, destination.latitude], zoom: 16.8, duration: 750 });
     }
   }, [route, destination, mapReady, followUser, liveGps, headingDeg]);
 
@@ -595,8 +539,7 @@ export default function Map3DView({
     if (!userMarkerRef.current) {
       const el = document.createElement('div');
       el.className = 'ml-gps-user';
-      el.innerHTML =
-        '<div class="ml-gps-arrow"></div><div class="ml-gps-dot"></div>';
+      el.innerHTML = '<div class="ml-gps-arrow"></div><div class="ml-gps-dot"></div>';
       userMarkerRef.current = new maplibregl.Marker({ element: el })
         .setLngLat([liveGps[1], liveGps[0]])
         .addTo(map);
@@ -615,237 +558,191 @@ export default function Map3DView({
         arrowEl.style.opacity = '0';
       }
     }
+  }, [liveGps, headingDeg]);
 
-    if (followUser) {
-      map.easeTo({
-        center: [liveGps[1], liveGps[0]],
-        bearing:
-          headingDeg !== null && Number.isFinite(headingDeg)
-            ? headingDeg
-            : map.getBearing(),
-        duration: 500,
-      });
-    }
-  }, [liveGps, headingDeg, followUser]);
-
-  function setCameraPitch(nextPitch: number) {
+  function toggle3D() {
     const map = mapRef.current;
     if (!map) return;
-    map.easeTo({ pitch: Math.max(0, Math.min(70, nextPitch)), duration: 400 });
+    const next = !is3D;
+    setIs3D(next);
+    map.easeTo({ pitch: next ? 60 : 0, bearing: next ? -20 : 0, duration: 500 });
   }
 
-  function rotateCamera(deltaDeg: number) {
-    const map = mapRef.current;
-    if (!map) return;
-    map.easeTo({ bearing: map.getBearing() + deltaDeg, duration: 350 });
-  }
-
-  function fitOverview() {
+  function fitCampus() {
     const map = mapRef.current;
     if (!map) return;
     const bounds = new maplibregl.LngLatBounds();
-    if (route && route.coordinates.length >= 2) {
-      route.coordinates.forEach((c) => {
-        if (c.length >= 2) bounds.extend([c[0], c[1]]);
-      });
-    } else {
-      places.forEach((p) => bounds.extend([p.longitude, p.latitude]));
-    }
-    if (!bounds.isEmpty()) {
-      map.fitBounds(bounds, {
-        padding: { top: 80, bottom: 90, left: 60, right: 60 },
-        pitch: 45,
-        bearing: 0,
-        duration: 700,
-      });
-    }
+    CAMPUS_BOUNDARY.forEach((c) => bounds.extend(c));
+    map.fitBounds(bounds, { padding: 50, duration: 700 });
   }
 
-  function reset3DCamera() {
-    const map = mapRef.current;
-    if (!map) return;
-    map.easeTo({
-      center: [destination.longitude, destination.latitude],
-      zoom: 16.8,
-      pitch: 60,
-      bearing: -15,
-      duration: 550,
-    });
-  }
+  const inspectedMeta = inspectedSpot ? metaFor(inspectedSpot.categoryKey) : null;
 
   return (
-    <div className="map3d-shell">
-      <div className="map3d-toolbar">
-        <div className="style-switcher">
-          <button
-            type="button"
-            className={styleMode === 'hybrid' ? 'active' : ''}
-            onClick={() => setStyleMode('hybrid')}
-          >
-            <Layers size={14} />
-            {lang === 'hi' ? '3D मैप' : '3D Map'}
-          </button>
-          <button
-            type="button"
-            className={styleMode === 'satellite' ? 'active' : ''}
-            onClick={() => setStyleMode('satellite')}
-          >
-            <Mountain size={14} />
-            {lang === 'hi' ? 'सैटेलाइट' : 'Satellite'}
-          </button>
-          <button
-            type="button"
-            className={styleMode === 'street' ? 'active' : ''}
-            onClick={() => setStyleMode('street')}
-          >
-            {lang === 'hi' ? 'स्ट्रीट' : 'Street'}
-          </button>
-        </div>
-
-        <div className="camera-actions">
-          <button
-            type="button"
-            className={pitch >= 35 ? 'active' : ''}
-            onClick={() => setCameraPitch(pitch >= 35 ? 0 : 60)}
-            title="Toggle 3D Tilt"
-          >
-            <Eye size={14} />
-            3D {pitch}°
-          </button>
-          <button
-            type="button"
-            onClick={() => rotateCamera(-30)}
-            title="Rotate Left"
-          >
-            <RotateCcw size={14} />
-          </button>
-          <button
-            type="button"
-            onClick={() => rotateCamera(30)}
-            title="Rotate Right"
-          >
-            <RotateCw size={14} />
-          </button>
-          <button type="button" onClick={fitOverview} title="Overview">
-            <Maximize2 size={14} />
-            {lang === 'hi' ? 'ओवरव्यू' : 'Overview'}
-          </button>
-          <button type="button" onClick={reset3DCamera} title="Reset 3D Angle">
-            <Compass size={14} />
-            {bearing}°
-          </button>
-          <button
-            type="button"
-            className={followUser ? 'active' : ''}
-            onClick={onToggleFollow}
-          >
-            <LocateFixed size={14} />
-            {lang === 'hi' ? 'फॉलो' : 'Follow'}
-          </button>
-        </div>
-      </div>
-
-      {/* Campus Places & Landmarks Strip — click any place to inspect full detail */}
-      <div className="landmark-guide-strip">
-        {places.map((pl) => {
-          const title = lang === 'hi' && pl.name_hi ? pl.name_hi : pl.name;
-          return (
-            <button
-              key={pl.id}
-              type="button"
-              className={
-                inspectedSpot?.title === title ? 'guide-chip active' : 'guide-chip'
+    <div className={showLabels ? 'map3d-shell' : 'map3d-shell gm-labels-off'}>
+      {/* Google-style search + category chips */}
+      <div className="gm-topbar">
+        <div className="gm-search">
+          <Search size={18} />
+          <input
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+              setSearchOpen(true);
+            }}
+            onFocus={() => setSearchOpen(true)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && searchResults[0]) {
+                inspectPlace(searchResults[0], true);
+                setSearchOpen(false);
               }
-              onClick={() => {
-                inspectPlace(pl);
-                mapRef.current?.flyTo({
-                  center: [pl.longitude, pl.latitude],
-                  zoom: 17.5,
-                  pitch: 62,
-                  duration: 750,
-                });
-              }}
-            >
-              <MapPin size={12} />
-              {title}
+            }}
+            placeholder={lang === 'hi' ? 'GBU में खोजें' : 'Search GBU campus'}
+            aria-label={lang === 'hi' ? 'GBU में खोजें' : 'Search GBU campus'}
+          />
+          {searchText && (
+            <button type="button" onClick={() => setSearchText('')} aria-label="Clear search">
+              <X size={16} />
             </button>
-          );
-        })}
+          )}
+          {searchOpen && searchResults.length > 0 && (
+            <ul className="gm-search-results">
+              {searchResults.map((p) => {
+                const meta = metaFor(p.category);
+                return (
+                  <li key={p.id}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        inspectPlace(p, true);
+                        setSearchOpen(false);
+                      }}
+                    >
+                      <span className="gm-result-dot" style={{ background: meta.color }}>
+                        {meta.glyph}
+                      </span>
+                      <span>
+                        <b>{nameOf(p)}</b>
+                        <small>{lang === 'hi' ? p.category_hi || meta.hi : p.category}</small>
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+
+        <div className="gm-chips">
+          {presentCategories.map((cat) => {
+            const meta = metaFor(cat);
+            const active = activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                className={active ? 'gm-chip active' : 'gm-chip'}
+                style={active ? { background: meta.color, borderColor: meta.color } : undefined}
+                onClick={() => setActiveCategory(active ? null : cat)}
+              >
+                <span>{meta.glyph}</span>
+                {lang === 'hi' ? meta.hi : meta.en}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Detailed Info Card for any clicked or visited place on map */}
+      {/* Right-side floating controls */}
+      <div className="gm-fab-stack">
+        <button type="button" className={is3D ? 'active' : ''} onClick={toggle3D} title="3D">
+          <Box size={18} />
+          <small>3D</small>
+        </button>
+        <button type="button" onClick={fitCampus} title={lang === 'hi' ? 'पूरा कैंपस' : 'Whole campus'}>
+          <Maximize2 size={18} />
+        </button>
+        <button
+          type="button"
+          className={followUser ? 'active' : ''}
+          onClick={onToggleFollow}
+          title={lang === 'hi' ? 'मेरी लोकेशन' : 'My location'}
+        >
+          <LocateFixed size={18} />
+        </button>
+      </div>
+
+      {/* Bottom-left layer tile */}
+      <button
+        type="button"
+        className={`gm-layer-tile ${styleMode === 'satellite' ? 'to-map' : 'to-sat'}`}
+        onClick={() => setStyleMode(styleMode === 'satellite' ? 'street' : 'satellite')}
+      >
+        <Layers size={14} />
+        <span>
+          {styleMode === 'satellite'
+            ? lang === 'hi' ? 'मैप' : 'Map'
+            : lang === 'hi' ? 'सैटेलाइट' : 'Satellite'}
+        </span>
+      </button>
+
+      {/* Google-style place card */}
       {inspectedSpot && (
-        <div className="landmark-narrator-card">
-          <div className="narrator-head">
+        <div className="gm-place-card">
+          <div className="gm-place-head">
             <div>
-              <small className="narrator-cat">{inspectedSpot.category}</small>
               <b>{inspectedSpot.title}</b>
+              <small style={{ color: inspectedMeta?.color }}>
+                {inspectedMeta?.glyph}&nbsp; {inspectedSpot.category}
+              </small>
             </div>
-            <button
-              type="button"
-              onClick={() => setInspectedSpot(null)}
-              aria-label="Close detail card"
-            >
-              <X size={16} />
+            <button type="button" onClick={() => setInspectedSpot(null)} aria-label="Close detail card">
+              <X size={18} />
             </button>
           </div>
           <p>{inspectedSpot.description}</p>
-          <div className="narrator-actions">
-            <button
-              type="button"
-              className="narrator-mini-btn"
-              onClick={() =>
-                speakAnnouncement(
-                  `${inspectedSpot.title}. ${inspectedSpot.description}`,
-                  lang
-                )
-              }
-            >
-              <Volume2 size={13} />
-              {lang === 'hi' ? 'सुनें' : 'Listen'}
-            </button>
-
+          <div className="gm-place-actions">
             {inspectedSpot.placeObj &&
               inspectedSpot.placeObj.id !== destination.id &&
               onSelectNewDestination && (
                 <button
                   type="button"
-                  className="narrator-mini-btn primary"
+                  className="primary"
                   onClick={() => {
                     onSelectNewDestination(inspectedSpot.placeObj!);
                     setInspectedSpot(null);
                   }}
                 >
-                  <Navigation size={13} />
-                  {lang === 'hi' ? 'यहाँ चलें' : 'Go Here'}
+                  <Navigation size={14} />
+                  {lang === 'hi' ? 'दिशा-निर्देश' : 'Directions'}
                 </button>
               )}
+            <button
+              type="button"
+              onClick={() => speakAnnouncement(`${inspectedSpot.title}. ${inspectedSpot.description}`, lang)}
+            >
+              <Volume2 size={14} />
+              {lang === 'hi' ? 'सुनें' : 'Listen'}
+            </button>
+            <a
+              href={`https://www.google.com/maps/dir/?api=1&destination=${inspectedSpot.lat},${inspectedSpot.lon}&travelmode=walking`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ExternalLink size={14} />
+              Google Maps
+            </a>
           </div>
         </div>
       )}
 
-      <div className="map3d-tilt-dock">
-        <span>{lang === 'hi' ? '3D टिल्ट' : '3D Tilt'}</span>
-        <input
-          type="range"
-          min={0}
-          max={68}
-          value={pitch}
-          onChange={(e) => setCameraPitch(Number(e.target.value))}
-          aria-label="3D Camera Tilt"
-        />
-        <b>{pitch}°</b>
-      </div>
-
-      {mapFallbackNotice && (
-        <div className="map3d-notice">{mapFallbackNotice}</div>
-      )}
+      {mapFallbackNotice && <div className="map3d-notice">{mapFallbackNotice}</div>}
 
       {pickPinMode && !route && (
         <div className="map3d-pick-banner">
           {lang === 'hi'
-            ? '📍 मैप पर किसी भी जगह या बिल्डिंग पर क्लिक करें — रास्ता और पूरी जानकारी दोनों दिखेंगी'
-            : '📍 Click any place or building on the map to drop Start (S) pin or inspect details'}
+            ? '📍 शुरुआती बिंदु चुनने के लिए मैप पर क्लिक करें'
+            : '📍 Click the map to drop your start point'}
         </div>
       )}
       <div ref={containerRef} className="map3d-canvas" />

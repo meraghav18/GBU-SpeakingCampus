@@ -428,7 +428,23 @@ export function useLiveNavigation({
           }
         }
 
-        for (const lm of landmarks) {
+        // Every mapped place speaks when approached; curated landmark scripts take priority.
+        const curatedIds = new Set(landmarks.map((l) => l.building_id));
+        const speakingPoints: Landmark[] = [
+          ...landmarks,
+          ...places
+            .filter((p) => !curatedIds.has(p.id) && p.id !== destination.id)
+            .map((p) => ({
+              landmark_id: p.id,
+              landmark_name: p.name,
+              name_hi: p.name_hi,
+              description: p.description,
+              description_hi: p.description_hi,
+              latitude: p.latitude,
+              longitude: p.longitude,
+            })),
+        ];
+        for (const lm of speakingPoints) {
           const key = lm.landmark_id || lm.landmark_name;
           if (announcedIdsRef.current.has(key)) continue;
           if (haversineMeters(current, [lm.latitude, lm.longitude]) <= LANDMARK_PROXIMITY_M) {

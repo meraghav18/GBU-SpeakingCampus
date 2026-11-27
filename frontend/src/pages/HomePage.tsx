@@ -328,7 +328,7 @@ export default function HomePage({
                     backgroundImage: `url('${image}')`,
                   }}
                 >
-                  <span>0{idx + 1}</span>
+                  <span>{String(idx + 1).padStart(2, '0')}</span>
 
                   {/* INFORMATION BUTTON */}
                   <button

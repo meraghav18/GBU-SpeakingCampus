@@ -8,6 +8,7 @@ import {
 import { Landmark, Place } from './types/navigation';
 import HomePage from './pages/HomePage';
 import NavigationPage from './pages/NavigationPage';
+import CampusChat from './components/CampusChat';
 
 function getDestinationIdFromPath(pathname: string): string | null {
   const match = pathname.match(/^\/navigation\/([^/?#]+)/i);
@@ -139,6 +140,8 @@ export default function App() {
           onSelectDestination={navigateToDestination}
         />
       )}
+
+      <CampusChat places={places} lang={lang} onNavigate={navigateToDestination} />
 
       <footer>
         <div className="brand">

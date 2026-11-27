@@ -293,6 +293,7 @@ def search_locations(q: str = Query("", min_length=0, max_length=100)):
             loc.get("category_hi", ""),
             loc.get("description", ""),
             loc.get("description_hi", ""),
+            " ".join(loc.get("aliases", [])),
         ]).lower()
         if term in haystack:
             matches.append(loc)
