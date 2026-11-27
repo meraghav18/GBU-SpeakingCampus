@@ -12,6 +12,8 @@ export type Place = {
   description: string;
   description_hi?: string;
   status?: VerificationStatus;
+  aliases?: string[];
+  source?: string;
 };
 
 export type RouteStep = {

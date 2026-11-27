@@ -4,26 +4,46 @@
     "name": "GBU Gate No. 1",
     "name_hi": "जीबीयू गेट नं. 1",
     "category": "Entrance",
-    "category_hi": "मुख्य द्वार",
+    "category_hi": "प्रवेश द्वार",
     "latitude": 28.416559,
     "longitude": 77.517199,
-    "description": "Main entrance of GBU.",
-    "description_hi": "गौतम बुद्ध विश्वविद्यालय का मुख्य प्रवेश द्वार।",
+    "description": "Main entry and exit gate of Gautam Buddha University for students, faculty, staff, and visitors; security monitors entry/vehicles, maintains campus security, guides visitors, and connects the campus with outside roads.",
+    "description_hi": "गौतम बुद्ध विश्वविद्यालय का मुख्य प्रवेश और निकास द्वार। यहाँ सुरक्षा कर्मी आगंतुकों और वाहनों की निगरानी करते हैं, कैंपस की सुरक्षा बनाए रखते हैं, आगंतुकों को दिशा दिखाते हैं और कैंपस को बाहर की सड़कों से जोड़ते हैं।",
     "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.416559,77.517199&travelmode=walking",
-    "status": "Verified"
+    "status": "Verified",
+    "aliases": [
+      "gate",
+      "gate 1",
+      "gate no 1",
+      "main gate",
+      "entrance",
+      "गेट"
+    ],
+    "source": "Project data"
   },
   {
     "id": "B002",
     "name": "GBU Admin Department",
-    "name_hi": "जीबीयू प्रशासनिक विभाग",
+    "name_hi": "जीबीयू प्रशासनिक विभाग (एडमिन ब्लॉक)",
     "category": "Administration",
     "category_hi": "प्रशासन",
     "latitude": 28.415914,
     "longitude": 77.520973,
-    "description": "University administrative offices.",
-    "description_hi": "विश्वविद्यालय के प्रशासनिक कार्यालय।",
+    "description": "One of the most important buildings of Gautam Buddha University. Handles official university documentation, student admission-related activities, and financial/accounts activities. Houses Registrar Office and Finance Office.",
+    "description_hi": "गौतम बुद्ध विश्वविद्यालय के सबसे महत्वपूर्ण भवनों में से एक (एडमिन ब्लॉक)। यहाँ आधिकारिक दस्तावेज़, छात्र प्रवेश (admission) से जुड़ी गतिविधियाँ और वित्तीय व लेखा कार्य संभाले जाते हैं। इसमें रजिस्ट्रार कार्यालय और वित्त कार्यालय (Finance Office) स्थित हैं।",
     "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.415914,77.520973&travelmode=walking",
-    "status": "Verified"
+    "status": "Verified",
+    "aliases": [
+      "admin",
+      "administrative",
+      "registrar",
+      "admission",
+      "examination",
+      "finance",
+      "fees",
+      "एडमिन"
+    ],
+    "source": "Project data"
   },
   {
     "id": "B003",
@@ -33,35 +53,812 @@
     "category_hi": "ध्यान केंद्र",
     "latitude": 28.419495,
     "longitude": 77.519195,
-    "description": "Meditation and relaxation centre.",
-    "description_hi": "ध्यान और शांति केंद्र।",
+    "description": "Mahatma Jyotiba Phule Dhyan Kendra is a meditation and mindfulness centre at GBU inspired by Buddhist Stupa designs. Provides a peaceful environment for meditation and promotes stress-free living.",
+    "description_hi": "महात्मा ज्योतिबा फुले ध्यान केंद्र जीबीयू का एक ध्यान और माइंडफुलनेस केंद्र है, जिसकी वास्तुकला बौद्ध स्तूप डिज़ाइन से प्रेरित है। यह ध्यान के लिए शांत वातावरण देता है और तनावमुक्त जीवन को बढ़ावा देता है।",
     "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.419495,77.519195&travelmode=walking",
-    "status": "Verified"
+    "status": "Verified",
+    "aliases": [
+      "meditation",
+      "dhyan",
+      "dhyan kendra",
+      "ध्यान"
+    ],
+    "source": "Project data"
   },
   {
     "id": "B004",
     "name": "School of Management",
     "name_hi": "स्कूल ऑफ मैनेजमेंट",
     "category": "Academic",
-    "category_hi": "शैक्षणिक भवन",
-    "latitude": 28.417256,
-    "longitude": 77.522084,
-    "description": "Management education.",
-    "description_hi": "प्रबंधन शिक्षा संकाय।",
-    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.417256,77.522084&travelmode=walking",
-    "status": "Verified"
+    "category_hi": "शैक्षणिक संकाय",
+    "latitude": 28.417684,
+    "longitude": 77.522757,
+    "description": "School of Management prepares students for professional careers in business, finance, marketing, human resources, and management.",
+    "description_hi": "स्कूल ऑफ मैनेजमेंट छात्रों को व्यवसाय (business), वित्त (finance), मार्केटिंग, मानव संसाधन (human resources) और प्रबंधन (management) के क्षेत्रों में पेशेवर करियर के लिए तैयार करता है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.417684,77.522757&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "management",
+      "som",
+      "mba",
+      "bba",
+      "मैनेजमेंट"
+    ],
+    "source": "Project data"
   },
   {
     "id": "B005",
     "name": "School of ICT",
     "name_hi": "स्कूल ऑफ आईसीटी",
     "category": "Academic",
-    "category_hi": "शैक्षणिक भवन",
+    "category_hi": "शैक्षणिक संकाय",
     "latitude": 28.416659,
     "longitude": 77.52348,
-    "description": "Information and Communication Technology.",
-    "description_hi": "सूचना एवं संचार प्रौद्योगिकी संकाय।",
+    "description": "School of ICT helps students develop technical knowledge and prepare for careers in software development, IT, networking, artificial intelligence, and other technology fields.",
+    "description_hi": "स्कूल ऑफ आईसीटी छात्रों को तकनीकी ज्ञान विकसित करने में मदद करता है और सॉफ्टवेयर डेवलपमेंट, आईटी, नेटवर्किंग, आर्टिफिशियल इंटेलिजेंस (AI) तथा अन्य तकनीक क्षेत्रों में करियर के लिए तैयार करता है।",
     "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.416659,77.523480&travelmode=walking",
-    "status": "Verified"
+    "status": "Verified",
+    "aliases": [
+      "ict",
+      "soict",
+      "computer",
+      "cse",
+      "btech cse",
+      "information technology",
+      "आईसीटी"
+    ],
+    "source": "Project data"
+  },
+  {
+    "id": "B006",
+    "name": "GBU Gate No. 2",
+    "name_hi": "जीबीयू गेट नं. 2",
+    "category": "Entrance",
+    "category_hi": "प्रवेश द्वार",
+    "latitude": 28.413756,
+    "longitude": 77.519392,
+    "description": "Second entry gate of GBU on the southern side of the campus.",
+    "description_hi": "कैंपस के दक्षिणी ओर स्थित जीबीयू का दूसरा प्रवेश द्वार।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.413756,77.519392&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "gate 2",
+      "gate no 2",
+      "second gate"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B007",
+    "name": "School of Biotechnology",
+    "name_hi": "स्कूल ऑफ बायोटेक्नोलॉजी",
+    "category": "Academic",
+    "category_hi": "शैक्षणिक संकाय",
+    "latitude": 28.419161,
+    "longitude": 77.521246,
+    "description": "School of Biotechnology offers programmes and research in biotechnology and life sciences.",
+    "description_hi": "स्कूल ऑफ बायोटेक्नोलॉजी में बायोटेक्नोलॉजी और जीवन विज्ञान की पढ़ाई और शोध होता है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.419161,77.521246&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "biotech",
+      "sobt",
+      "biotechnology"
+    ],
+    "source": "OpenStreetMap"
+  },
+  {
+    "id": "B008",
+    "name": "School of Engineering (Block B)",
+    "name_hi": "स्कूल ऑफ इंजीनियरिंग (ब्लॉक B)",
+    "category": "Academic",
+    "category_hi": "शैक्षणिक संकाय",
+    "latitude": 28.420265,
+    "longitude": 77.524196,
+    "description": "School of Engineering covers engineering disciplines such as civil, mechanical and electrical engineering.",
+    "description_hi": "स्कूल ऑफ इंजीनियरिंग में सिविल, मैकेनिकल और इलेक्ट्रिकल जैसी इंजीनियरिंग शाखाओं की पढ़ाई होती है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.420265,77.524196&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "engineering",
+      "soe",
+      "block b",
+      "mechanical",
+      "civil",
+      "electrical"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B009",
+    "name": "Dept. of Architecture & Regional Planning",
+    "name_hi": "आर्किटेक्चर एवं क्षेत्रीय नियोजन विभाग",
+    "category": "Academic",
+    "category_hi": "शैक्षणिक संकाय",
+    "latitude": 28.420562,
+    "longitude": 77.524062,
+    "description": "Department of Architecture and Regional Planning, next to the School of Engineering.",
+    "description_hi": "आर्किटेक्चर एवं क्षेत्रीय नियोजन विभाग, स्कूल ऑफ इंजीनियरिंग के पास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.420562,77.524062&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "architecture",
+      "planning",
+      "b.arch",
+      "barch"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B010",
+    "name": "School of Vocational Studies & Applied Sciences",
+    "name_hi": "स्कूल ऑफ वोकेशनल स्टडीज़ एवं एप्लाइड साइंसेज़",
+    "category": "Academic",
+    "category_hi": "शैक्षणिक संकाय",
+    "latitude": 28.420135,
+    "longitude": 77.52174,
+    "description": "School of Vocational Studies and Applied Sciences offers applied science subjects such as physics, chemistry, mathematics and food processing.",
+    "description_hi": "स्कूल ऑफ वोकेशनल स्टडीज़ एवं एप्लाइड साइंसेज़ में भौतिकी, रसायन, गणित और फूड प्रोसेसिंग जैसे विषय पढ़ाए जाते हैं।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.420135,77.52174&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "vocational",
+      "applied science",
+      "sovsas",
+      "physics",
+      "chemistry",
+      "maths",
+      "mathematics"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B011",
+    "name": "School of Law, Justice & Governance",
+    "name_hi": "स्कूल ऑफ लॉ, जस्टिस एवं गवर्नेंस",
+    "category": "Academic",
+    "category_hi": "शैक्षणिक संकाय",
+    "latitude": 28.417212,
+    "longitude": 77.524836,
+    "description": "School of Law, Justice and Governance offers law programmes such as BA LLB and LLM.",
+    "description_hi": "स्कूल ऑफ लॉ, जस्टिस एवं गवर्नेंस में बीए एलएलबी और एलएलएम जैसे कानून के कोर्स होते हैं।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.417212,77.524836&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "law",
+      "sljg",
+      "llb",
+      "llm",
+      "legal"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B012",
+    "name": "Dr. B. R. Ambedkar Central Library",
+    "name_hi": "डॉ. बी. आर. आंबेडकर केंद्रीय पुस्तकालय",
+    "category": "Library",
+    "category_hi": "पुस्तकालय",
+    "latitude": 28.419906,
+    "longitude": 77.526145,
+    "description": "Bodhisattva Dr. B. R. Ambedkar Central Library, the main library of GBU for books, journals and reading space.",
+    "description_hi": "बोधिसत्व डॉ. बी. आर. आंबेडकर केंद्रीय पुस्तकालय, जीबीयू का मुख्य पुस्तकालय जहाँ किताबें, जर्नल और पढ़ने की जगह है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.419906,77.526145&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "library",
+      "central library",
+      "pustakalaya",
+      "लाइब्रेरी",
+      "पुस्तकालय"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B013",
+    "name": "GBU Auditorium",
+    "name_hi": "जीबीयू ऑडिटोरियम",
+    "category": "Events",
+    "category_hi": "कार्यक्रम स्थल",
+    "latitude": 28.414629,
+    "longitude": 77.521759,
+    "description": "University venue for events, conferences and seminars.",
+    "description_hi": "विश्वविद्यालय के कार्यक्रमों, सम्मेलनों और सेमिनारों के लिए सभागार।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.414629,77.521759&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "auditorium",
+      "hall",
+      "seminar",
+      "ऑडिटोरियम",
+      "सभागार"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B014",
+    "name": "International Convention Centre",
+    "name_hi": "अंतरराष्ट्रीय सम्मेलन केंद्र",
+    "category": "Events",
+    "category_hi": "कार्यक्रम स्थल",
+    "latitude": 28.416546,
+    "longitude": 77.526247,
+    "description": "International Convention Centre used for conferences and large university events.",
+    "description_hi": "सम्मेलनों और बड़े विश्वविद्यालय कार्यक्रमों के लिए अंतरराष्ट्रीय सम्मेलन केंद्र।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.416546,77.526247&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "convention",
+      "international centre",
+      "icc",
+      "conference"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B015",
+    "name": "AIC-GBU Incubation Centre",
+    "name_hi": "एआईसी-जीबीयू इनक्यूबेशन सेंटर",
+    "category": "Services",
+    "category_hi": "सुविधाएँ",
+    "latitude": 28.42001,
+    "longitude": 77.526542,
+    "description": "Atal Incubation Centre at GBU supporting student and startup innovation.",
+    "description_hi": "जीबीयू का अटल इनक्यूबेशन सेंटर, जो छात्रों और स्टार्टअप नवाचार को सहयोग देता है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.42001,77.526542&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "incubation",
+      "aic",
+      "startup"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B016",
+    "name": "GBU Guest House",
+    "name_hi": "जीबीयू अतिथि गृह",
+    "category": "Services",
+    "category_hi": "सुविधाएँ",
+    "latitude": 28.41546,
+    "longitude": 77.525544,
+    "description": "University guest house for visiting guests.",
+    "description_hi": "आने वाले अतिथियों के लिए विश्वविद्यालय का अतिथि गृह।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.41546,77.525544&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "guest house",
+      "guesthouse"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B017",
+    "name": "Mahamaya Shanti Sarovar",
+    "name_hi": "महामाया शांति सरोवर",
+    "category": "Landmark",
+    "category_hi": "प्रमुख स्थल",
+    "latitude": 28.418776,
+    "longitude": 77.523269,
+    "description": "Mahamaya Shanti Sarovar, the central lake of the GBU campus.",
+    "description_hi": "महामाया शांति सरोवर, जीबीयू कैंपस की केंद्रीय झील।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.418776,77.523269&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "lake",
+      "sarovar",
+      "pond",
+      "jheel",
+      "झील"
+    ],
+    "source": "Wikimapia"
+  },
+  {
+    "id": "B018",
+    "name": "Tathagat Gautam Buddha Statue",
+    "name_hi": "तथागत गौतम बुद्ध प्रतिमा",
+    "category": "Landmark",
+    "category_hi": "प्रमुख स्थल",
+    "latitude": 28.418943,
+    "longitude": 77.523697,
+    "description": "Statue of Tathagat Gautam Buddha near Mahamaya Shanti Sarovar.",
+    "description_hi": "महामाया शांति सरोवर के पास तथागत गौतम बुद्ध की प्रतिमा।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.418943,77.523697&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "buddha statue",
+      "statue",
+      "murti",
+      "प्रतिमा"
+    ],
+    "source": "Wikimapia"
+  },
+  {
+    "id": "B019",
+    "name": "Dr. Ambedkar Statue",
+    "name_hi": "डॉ. आंबेडकर प्रतिमा",
+    "category": "Landmark",
+    "category_hi": "प्रमुख स्थल",
+    "latitude": 28.416637,
+    "longitude": 77.520606,
+    "description": "Statue of Dr. B. R. Ambedkar near the Administrative Block.",
+    "description_hi": "प्रशासनिक भवन के पास डॉ. बी. आर. आंबेडकर की प्रतिमा।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.416637,77.520606&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "ambedkar statue"
+    ],
+    "source": "Wikimapia"
+  },
+  {
+    "id": "B020",
+    "name": "The Grand Street Cafe",
+    "name_hi": "द ग्रैंड स्ट्रीट कैफ़े",
+    "category": "Food",
+    "category_hi": "खान-पान",
+    "latitude": 28.41706,
+    "longitude": 77.519095,
+    "description": "Cafe on the main campus road between Gate No. 1 and the Administrative Block. Timings not verified.",
+    "description_hi": "गेट नं. 1 और प्रशासनिक भवन के बीच मुख्य सड़क पर कैफ़े। समय सत्यापित नहीं है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.41706,77.519095&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "cafe",
+      "grand street",
+      "coffee",
+      "canteen",
+      "कैफ़े"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B021",
+    "name": "GBU Dispensary",
+    "name_hi": "जीबीयू डिस्पेंसरी",
+    "category": "Health",
+    "category_hi": "स्वास्थ्य",
+    "latitude": 28.427664,
+    "longitude": 77.52836,
+    "description": "Campus dispensary for basic medical care.",
+    "description_hi": "प्राथमिक चिकित्सा के लिए कैंपस डिस्पेंसरी।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.427664,77.52836&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "dispensary",
+      "hospital",
+      "doctor",
+      "medical",
+      "health",
+      "डॉक्टर",
+      "अस्पताल"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B022",
+    "name": "GBU Shopping Complex",
+    "name_hi": "जीबीयू शॉपिंग कॉम्प्लेक्स",
+    "category": "Services",
+    "category_hi": "सुविधाएँ",
+    "latitude": 28.427542,
+    "longitude": 77.527878,
+    "description": "Shopping complex near the boys hostels with daily-need shops.",
+    "description_hi": "बॉयज़ हॉस्टल के पास रोज़मर्रा की दुकानों वाला शॉपिंग कॉम्प्लेक्स।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.427542,77.527878&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "shopping",
+      "shop",
+      "market",
+      "stationery",
+      "दुकान"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B023",
+    "name": "Punjab National Bank & ATM",
+    "name_hi": "पंजाब नेशनल बैंक और एटीएम",
+    "category": "Services",
+    "category_hi": "सुविधाएँ",
+    "latitude": 28.427883,
+    "longitude": 77.527973,
+    "description": "Punjab National Bank branch and ATM in the shopping complex area.",
+    "description_hi": "शॉपिंग कॉम्प्लेक्स क्षेत्र में पंजाब नेशनल बैंक शाखा और एटीएम।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.427883,77.527973&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "bank",
+      "pnb",
+      "atm",
+      "बैंक"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B024",
+    "name": "Post Office",
+    "name_hi": "डाकघर",
+    "category": "Services",
+    "category_hi": "सुविधाएँ",
+    "latitude": 28.427838,
+    "longitude": 77.527997,
+    "description": "India Post office inside the campus near the shopping complex.",
+    "description_hi": "शॉपिंग कॉम्प्लेक्स के पास कैंपस के अंदर भारतीय डाकघर।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.427838,77.527997&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "post office",
+      "post",
+      "डाकघर"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B025",
+    "name": "GBU Indoor Stadium",
+    "name_hi": "जीबीयू इंडोर स्टेडियम",
+    "category": "Sports",
+    "category_hi": "खेल",
+    "latitude": 28.425628,
+    "longitude": 77.528416,
+    "description": "Indoor stadium for indoor sports.",
+    "description_hi": "इनडोर खेलों के लिए इंडोर स्टेडियम।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.425628,77.528416&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "indoor stadium",
+      "badminton",
+      "stadium",
+      "gym",
+      "स्टेडियम"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B026",
+    "name": "GBU Cricket Ground",
+    "name_hi": "जीबीयू क्रिकेट ग्राउंड",
+    "category": "Sports",
+    "category_hi": "खेल",
+    "latitude": 28.424205,
+    "longitude": 77.527749,
+    "description": "Cricket ground of the university.",
+    "description_hi": "विश्वविद्यालय का क्रिकेट मैदान।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.424205,77.527749&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "cricket",
+      "ground",
+      "मैदान"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B027",
+    "name": "GBU Hockey Stadium",
+    "name_hi": "जीबीयू हॉकी स्टेडियम",
+    "category": "Sports",
+    "category_hi": "खेल",
+    "latitude": 28.422335,
+    "longitude": 77.524485,
+    "description": "Hockey stadium of the university.",
+    "description_hi": "विश्वविद्यालय का हॉकी स्टेडियम।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.422335,77.524485&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "hockey"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B028",
+    "name": "Mahadevi Verma Girls Hostel",
+    "name_hi": "महादेवी वर्मा गर्ल्स हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.422101,
+    "longitude": 77.519911,
+    "description": "Girls hostel in the girls hostel complex.",
+    "description_hi": "गर्ल्स हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.422101,77.519911&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "mahadevi",
+      "girls hostel"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B029",
+    "name": "Girls Hostel Complex",
+    "name_hi": "गर्ल्स हॉस्टल परिसर",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.421497,
+    "longitude": 77.520532,
+    "description": "Girls hostel complex of GBU.",
+    "description_hi": "जीबीयू का गर्ल्स हॉस्टल परिसर।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.421497,77.520532&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "girls hostel",
+      "girls hostels",
+      "ladies hostel"
+    ],
+    "source": "Wikimapia"
+  },
+  {
+    "id": "B030",
+    "name": "Sant Kabir Das Boys Hostel",
+    "name_hi": "संत कबीर दास बॉयज़ हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.423963,
+    "longitude": 77.52323,
+    "description": "Boys hostel in the boys hostel complex.",
+    "description_hi": "बॉयज़ हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.423963,77.52323&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "kabir",
+      "kabirdas"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B031",
+    "name": "Sant Ravidas Boys Hostel",
+    "name_hi": "संत रविदास बॉयज़ हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.423692,
+    "longitude": 77.525024,
+    "description": "Boys hostel in the boys hostel complex.",
+    "description_hi": "बॉयज़ हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.423692,77.525024&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "ravidas"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B032",
+    "name": "Chhatrapati Shahuji Maharaj Boys Hostel",
+    "name_hi": "छत्रपति शाहूजी महाराज बॉयज़ हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.423224,
+    "longitude": 77.522986,
+    "description": "Boys hostel in the boys hostel complex.",
+    "description_hi": "बॉयज़ हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.423224,77.522986&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "shahuji",
+      "sahuji"
+    ],
+    "source": "Wikimapia"
+  },
+  {
+    "id": "B033",
+    "name": "Birsa Munda Boys Hostel",
+    "name_hi": "बिरसा मुंडा बॉयज़ हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.424248,
+    "longitude": 77.524097,
+    "description": "Boys hostel in the boys hostel complex.",
+    "description_hi": "बॉयज़ हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.424248,77.524097&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "birsa",
+      "munda"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B034",
+    "name": "Shree Narayan Guru Boys Hostel",
+    "name_hi": "श्री नारायण गुरु बॉयज़ हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.424627,
+    "longitude": 77.524523,
+    "description": "Boys hostel in the boys hostel complex.",
+    "description_hi": "बॉयज़ हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.424627,77.524523&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "narayan guru",
+      "narayanguru"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B035",
+    "name": "Ram Manohar Lohia Boys Hostel",
+    "name_hi": "राम मनोहर लोहिया बॉयज़ हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.425704,
+    "longitude": 77.52446,
+    "description": "Boys hostel in the boys hostel complex.",
+    "description_hi": "बॉयज़ हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.425704,77.52446&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "lohia",
+      "lohiya"
+    ],
+    "source": "Wikimapia"
+  },
+  {
+    "id": "B036",
+    "name": "Guru Ghasi Das Boys Hostel",
+    "name_hi": "गुरु घासीदास बॉयज़ हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.425688,
+    "longitude": 77.525682,
+    "description": "Boys hostel in the boys hostel complex.",
+    "description_hi": "बॉयज़ हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.425688,77.525682&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "ghasi das",
+      "ghasidas"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B037",
+    "name": "Raheem Das Boys Hostel",
+    "name_hi": "रहीम दास बॉयज़ हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.426992,
+    "longitude": 77.526146,
+    "description": "Boys hostel in the boys hostel complex.",
+    "description_hi": "बॉयज़ हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.426992,77.526146&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "raheem",
+      "rahim"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B038",
+    "name": "Munshi Premchand Boys Hostel",
+    "name_hi": "मुंशी प्रेमचंद बॉयज़ हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.426589,
+    "longitude": 77.526457,
+    "description": "Boys hostel in the boys hostel complex.",
+    "description_hi": "बॉयज़ हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.426589,77.526457&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "premchand",
+      "munshi"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B039",
+    "name": "Maharshi Valmiki Boys Hostel",
+    "name_hi": "महर्षि वाल्मीकि बॉयज़ हॉस्टल",
+    "category": "Hostel",
+    "category_hi": "छात्रावास",
+    "latitude": 28.427097,
+    "longitude": 77.527215,
+    "description": "Boys hostel in the boys hostel complex.",
+    "description_hi": "बॉयज़ हॉस्टल परिसर में स्थित छात्रावास।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.427097,77.527215&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "valmiki"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B040",
+    "name": "Boys Hostel Mess",
+    "name_hi": "बॉयज़ हॉस्टल मेस",
+    "category": "Food",
+    "category_hi": "खान-पान",
+    "latitude": 28.426236,
+    "longitude": 77.525103,
+    "description": "Dining mess for boys hostel residents. Hostel students get four meals a day.",
+    "description_hi": "बॉयज़ हॉस्टल के छात्रों के लिए मेस। हॉस्टल छात्रों को दिन में चार बार भोजन मिलता है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.426236,77.525103&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "mess",
+      "food",
+      "dining",
+      "khana",
+      "खाना",
+      "मेस"
+    ],
+    "source": "Wikimapia"
+  },
+  {
+    "id": "B041",
+    "name": "The Food Adda",
+    "name_hi": "द फ़ूड अड्डा",
+    "category": "Food",
+    "category_hi": "खान-पान",
+    "latitude": 28.427537,
+    "longitude": 77.527512,
+    "description": "Food outlet near the shopping complex. Timings not verified.",
+    "description_hi": "शॉपिंग कॉम्प्लेक्स के पास खाने की दुकान। समय सत्यापित नहीं है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.427537,77.527512&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "food adda",
+      "snacks",
+      "food"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B042",
+    "name": "IDBI Bank ATM",
+    "name_hi": "आईडीबीआई बैंक एटीएम",
+    "category": "Services",
+    "category_hi": "सुविधाएँ",
+    "latitude": 28.425485,
+    "longitude": 77.524715,
+    "description": "IDBI Bank ATM near the boys hostels.",
+    "description_hi": "बॉयज़ हॉस्टल के पास आईडीबीआई बैंक एटीएम।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.425485,77.524715&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "idbi",
+      "atm"
+    ],
+    "source": "Google Maps"
+  },
+  {
+    "id": "B043",
+    "name": "EV Charging Station",
+    "name_hi": "ईवी चार्जिंग स्टेशन",
+    "category": "Services",
+    "category_hi": "सुविधाएँ",
+    "latitude": 28.424531,
+    "longitude": 77.52097,
+    "description": "Electric vehicle charging station on campus.",
+    "description_hi": "कैंपस में इलेक्ट्रिक वाहन चार्जिंग स्टेशन।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.424531,77.52097&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "charging",
+      "ev"
+    ],
+    "source": "OpenStreetMap"
+  },
+  {
+    "id": "B044",
+    "name": "Main Parking",
+    "name_hi": "मुख्य पार्किंग",
+    "category": "Services",
+    "category_hi": "सुविधाएँ",
+    "latitude": 28.416009,
+    "longitude": 77.518935,
+    "description": "Parking area on the main road near Gate No. 1.",
+    "description_hi": "गेट नं. 1 के पास मुख्य सड़क पर पार्किंग।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.416009,77.518935&travelmode=walking",
+    "status": "Verified",
+    "aliases": [
+      "parking",
+      "पार्किंग"
+    ],
+    "source": "OpenStreetMap"
   }
 ]
