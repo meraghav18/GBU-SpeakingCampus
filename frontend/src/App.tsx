@@ -96,21 +96,21 @@ export default function App() {
           className="brand brand-btn"
           onClick={navigateToHome}
         >
-          <div className="brand-mark">OG</div>
+          <div className="brand-mark">SC</div>
           <div>
             <b>
-              GBU OG <span>(One Guide)</span>
+             Speaking Campus
             </b>
             <small>GAUTAM BUDDHA UNIVERSITY</small>
           </div>
         </button>
 
         <div className="nav-right">
-          <span className="nav-status">
-            <i /> {lang === 'hi' ? 'जीबीयू वन गाइड' : 'GBU ONE GUIDE'}
-          </span>
+  <span className="nav-status">
+    <i /> {lang === 'hi' ? 'स्पीकिंग कैंपस' : 'SPEAKING CAMPUS'}
+  </span>
 
-          <button
+  <button
             type="button"
             className="lang"
             onClick={() => setLang((prev) => (prev === 'en' ? 'hi' : 'en'))}
@@ -145,10 +145,10 @@ export default function App() {
 
       <footer>
         <div className="brand">
-          <div className="brand-mark">OG</div>
+          <div className="brand-mark">SC</div>
           <div>
             <b>
-              GBU OG <span>(One Guide)</span>
+              Speaking Campus
             </b>
             <small>GAUTAM BUDDHA UNIVERSITY</small>
           </div>
