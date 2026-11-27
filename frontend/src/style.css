@@ -1837,3 +1837,7 @@ footer > span {
     bottom: 12px;
   }
 }
+/* Hide location/category chips above the map */
+.gm-chips {
+  display: none !important;
+}
