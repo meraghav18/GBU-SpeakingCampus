@@ -38,20 +38,24 @@ app = FastAPI(
 # CORS Configuration
 # --------------------------------
 
-frontend_origin = os.getenv("FRONTEND_ORIGIN", "").strip()
+FRONTEND_ORIGIN = os.getenv(
+    "FRONTEND_ORIGIN",
+    "https://gbu-campusguide.vercel.app"
+).strip().rstrip("/")
 
-allowed_origins = [
+ALLOWED_ORIGINS = [
+    "https://gbu-campusguide.vercel.app",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
 
-if frontend_origin:
-    allowed_origins.append(frontend_origin.rstrip("/"))
+if FRONTEND_ORIGIN and FRONTEND_ORIGIN not in ALLOWED_ORIGINS:
+    ALLOWED_ORIGINS.append(FRONTEND_ORIGIN)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
