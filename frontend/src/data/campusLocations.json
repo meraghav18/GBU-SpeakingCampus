@@ -1,0 +1,67 @@
+[
+  {
+    "id": "B001",
+    "name": "GBU Gate No. 1",
+    "name_hi": "जीबीयू गेट नं. 1",
+    "category": "Entrance",
+    "category_hi": "मुख्य द्वार",
+    "latitude": 28.416559,
+    "longitude": 77.517199,
+    "description": "Main entrance of GBU.",
+    "description_hi": "गौतम बुद्ध विश्वविद्यालय का मुख्य प्रवेश द्वार।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.416559,77.517199&travelmode=walking",
+    "status": "Verified"
+  },
+  {
+    "id": "B002",
+    "name": "GBU Admin Department",
+    "name_hi": "जीबीयू प्रशासनिक विभाग",
+    "category": "Administration",
+    "category_hi": "प्रशासन",
+    "latitude": 28.415914,
+    "longitude": 77.520973,
+    "description": "University administrative offices.",
+    "description_hi": "विश्वविद्यालय के प्रशासनिक कार्यालय।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.415914,77.520973&travelmode=walking",
+    "status": "Verified"
+  },
+  {
+    "id": "B003",
+    "name": "Meditation Centre",
+    "name_hi": "ध्यान केंद्र (मेडिटेशन सेंटर)",
+    "category": "Meditation",
+    "category_hi": "ध्यान केंद्र",
+    "latitude": 28.419495,
+    "longitude": 77.519195,
+    "description": "Meditation and relaxation centre.",
+    "description_hi": "ध्यान और शांति केंद्र।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.419495,77.519195&travelmode=walking",
+    "status": "Verified"
+  },
+  {
+    "id": "B004",
+    "name": "School of Management",
+    "name_hi": "स्कूल ऑफ मैनेजमेंट",
+    "category": "Academic",
+    "category_hi": "शैक्षणिक भवन",
+    "latitude": 28.417256,
+    "longitude": 77.522084,
+    "description": "Management education.",
+    "description_hi": "प्रबंधन शिक्षा संकाय।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.417256,77.522084&travelmode=walking",
+    "status": "Verified"
+  },
+  {
+    "id": "B005",
+    "name": "School of ICT",
+    "name_hi": "स्कूल ऑफ आईसीटी",
+    "category": "Academic",
+    "category_hi": "शैक्षणिक भवन",
+    "latitude": 28.416659,
+    "longitude": 77.52348,
+    "description": "Information and Communication Technology.",
+    "description_hi": "सूचना एवं संचार प्रौद्योगिकी संकाय।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.416659,77.523480&travelmode=walking",
+    "status": "Verified"
+  }
+]

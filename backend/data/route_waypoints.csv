@@ -1,0 +1,6 @@
+waypoint_id,route_id,sequence,name,latitude,longitude,instruction,landmark_side,verification_status
+W001,R001,1,GBU Gate No. 1,28.416559,77.517199,Start navigation,None,Coordinates Available
+W008,R001,2,Meditation Centre,28.419495,77.519195,Continue towards School of Management,None,Coordinates Available
+W005,R001,3,School of Management,28.417256,77.522084,Continue towards ICT,Side Pending,Coordinates Available
+W006,R001,4,Admin Department,28.415914,77.520973,Continue towards ICT,Opposite School of Management,Coordinates Available
+W007,R001,5,School of ICT,28.416659,77.523480,Destination,None,Coordinates Available

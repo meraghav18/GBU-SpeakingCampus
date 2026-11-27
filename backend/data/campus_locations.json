@@ -1,0 +1,67 @@
+[
+  {
+    "id": "B001",
+    "name": "GBU Gate No. 1",
+    "name_hi": "जीबीयू गेट नं. 1",
+    "category": "Entrance",
+    "category_hi": "मुख्य द्वार",
+    "latitude": 28.416559,
+    "longitude": 77.517199,
+    "description": "Main entry and exit gate of Gautam Buddha University for students, faculty, staff, and visitors; security monitors entry/vehicles, maintains campus security, guides visitors, and connects the campus with outside roads.",
+    "description_hi": "गौतम बुद्ध विश्वविद्यालय का मुख्य प्रवेश और निकास द्वार। यहाँ सुरक्षा कर्मी आगंतुकों और वाहनों की निगरानी करते हैं, कैंपस की सुरक्षा बनाए रखते हैं, आगंतुकों को दिशा दिखाते हैं और कैंपस को बाहर की सड़कों से जोड़ते हैं।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.416559,77.517199&travelmode=walking",
+    "status": "Verified"
+  },
+  {
+    "id": "B002",
+    "name": "GBU Admin Department",
+    "name_hi": "जीबीयू प्रशासनिक विभाग (एडमिन ब्लॉक)",
+    "category": "Administration",
+    "category_hi": "प्रशासन",
+    "latitude": 28.415914,
+    "longitude": 77.520973,
+    "description": "One of the most important buildings of Gautam Buddha University. Handles official university documentation, student admission-related activities, and financial/accounts activities. Houses Registrar Office and Finance Office.",
+    "description_hi": "गौतम बुद्ध विश्वविद्यालय के सबसे महत्वपूर्ण भवनों में से एक (एडमिन ब्लॉक)। यहाँ आधिकारिक दस्तावेज़, छात्र प्रवेश (admission) से जुड़ी गतिविधियाँ और वित्तीय व लेखा कार्य संभाले जाते हैं। इसमें रजिस्ट्रार कार्यालय और वित्त कार्यालय (Finance Office) स्थित हैं।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.415914,77.520973&travelmode=walking",
+    "status": "Verified"
+  },
+  {
+    "id": "B003",
+    "name": "Meditation Centre",
+    "name_hi": "ध्यान केंद्र (मेडिटेशन सेंटर)",
+    "category": "Meditation",
+    "category_hi": "ध्यान केंद्र",
+    "latitude": 28.419495,
+    "longitude": 77.519195,
+    "description": "Mahatma Jyotiba Phule Dhyan Kendra is a meditation and mindfulness centre at GBU inspired by Buddhist Stupa designs. Provides a peaceful environment for meditation and promotes stress-free living.",
+    "description_hi": "महात्मा ज्योतिबा फुले ध्यान केंद्र जीबीयू का एक ध्यान और माइंडफुलनेस केंद्र है, जिसकी वास्तुकला बौद्ध स्तूप डिज़ाइन से प्रेरित है। यह ध्यान के लिए शांत वातावरण देता है और तनावमुक्त जीवन को बढ़ावा देता है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.419495,77.519195&travelmode=walking",
+    "status": "Verified"
+  },
+  {
+    "id": "B004",
+    "name": "School of Management",
+    "name_hi": "स्कूल ऑफ मैनेजमेंट",
+    "category": "Academic",
+    "category_hi": "शैक्षणिक संकाय",
+    "latitude": 28.417684,
+    "longitude": 77.522757,
+    "description": "School of Management prepares students for professional careers in business, finance, marketing, human resources, and management.",
+    "description_hi": "स्कूल ऑफ मैनेजमेंट छात्रों को व्यवसाय (business), वित्त (finance), मार्केटिंग, मानव संसाधन (human resources) और प्रबंधन (management) के क्षेत्रों में पेशेवर करियर के लिए तैयार करता है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.417684,77.522757&travelmode=walking",
+    "status": "Verified"
+  },
+  {
+    "id": "B005",
+    "name": "School of ICT",
+    "name_hi": "स्कूल ऑफ आईसीटी",
+    "category": "Academic",
+    "category_hi": "शैक्षणिक संकाय",
+    "latitude": 28.416659,
+    "longitude": 77.523480,
+    "description": "School of ICT helps students develop technical knowledge and prepare for careers in software development, IT, networking, artificial intelligence, and other technology fields.",
+    "description_hi": "स्कूल ऑफ आईसीटी छात्रों को तकनीकी ज्ञान विकसित करने में मदद करता है और सॉफ्टवेयर डेवलपमेंट, आईटी, नेटवर्किंग, आर्टिफिशियल इंटेलिजेंस (AI) तथा अन्य तकनीक क्षेत्रों में करियर के लिए तैयार करता है।",
+    "google_maps_link": "https://www.google.com/maps/dir/?api=1&destination=28.416659,77.523480&travelmode=walking",
+    "status": "Verified"
+  }
+]

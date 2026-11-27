@@ -1,0 +1,6 @@
+id,name,category,latitude,longitude,google_maps_link,description,status
+B001,GBU Gate No. 1,Entrance,28.416559,77.517199,"https://www.google.com/maps/dir/?api=1&destination=28.416559,77.517199&travelmode=walking",Main entrance of GBU.,Verified
+B002,GBU Admin Department,Administration,28.415914,77.520973,"https://www.google.com/maps/dir/?api=1&destination=28.415914,77.520973&travelmode=walking",University administrative offices.,Verified
+B003,Meditation Centre,Meditation,28.419495,77.519195,"https://www.google.com/maps/dir/?api=1&destination=28.419495,77.519195&travelmode=walking",Meditation and relaxation centre.,Verified
+B004,School of Management,Academic,28.417256,77.522084,"https://www.google.com/maps/dir/?api=1&destination=28.417256,77.522084&travelmode=walking",Management education.,Verified
+B005,School of ICT,Academic,28.416659,77.523480,"https://www.google.com/maps/dir/?api=1&destination=28.416659,77.523480&travelmode=walking",Information and Communication Technology.,Verified
